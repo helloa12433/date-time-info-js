@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Date & Time Info</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    h2 {
+      color: #333;
+    }
+    select {
+      padding: 10px;
+      margin: 10px;
+      border-radius: 8px;
+      border: 1px solid #aaa;
+      font-size: 16px;
+    }
+    #output {
+      margin-top: 20px;
+      padding: 15px 25px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      font-size: 18px;
+      color: #222;
+      min-width: 250px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h2>📅 Date & Time Information</h2>
+
+  <label for="option">Select what you want to know:</label>
+  <select id="option" onchange="showInfo()">
+    <option value="" disabled selected>Choose an option</option>
+    <option value="date">Today's Date</option>
+    <option value="time">Current Time</option>
+    <option value="day">Today's Day</option>
+    <option value="hour">Current Hour</option>
+    <option value="minute">Current Minute</option>
+    <option value="locale">Full Date & Time (Locale)</option>
+  </select>
+
+  <div id="output">Your answer will appear here 👇</div>
+
+  <script>
+    function format12Hour(hours, minutes, seconds) {
+      let ampm = hours >= 12 ? "PM" : "AM";
+      hours = hours % 12 || 12;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+      return `${hours}:${minutes}:${seconds} ${ampm}`;
+    }
+
+    function showInfo() {
+      const choice = document.getElementById("option").value;
+      const d = new Date();
+      let result = "";
+
+      switch (choice) {
+        case "date":
+          result = `Today's date is: ${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+          break;
+        case "time":
+          result = `The current time is: ${format12Hour(d.getHours(), d.getMinutes(), d.getSeconds())}`;
+          break;
+        case "day":
+          const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+          result = `Today is: ${days[d.getDay()]}`;
+          break;
+        case "hour":
+          const hour12 = d.getHours() % 12 || 12;
+          const ampm = d.getHours() >= 12 ? "PM" : "AM";
+          result = `The current hour is: ${hour12} ${ampm}`;
+          break;
+        case "minute":
+          result = `The current minute is: ${d.getMinutes()}`;
+          break;
+        case "locale":
+          result = `Full date and time: ${d.toLocaleString()}`;
+          break;
+        default:
+          result = "Please select an option.";
+      }
+
+      document.getElementById("output").innerText = result;
+    }
+  </script>
+</body>
+</html>
